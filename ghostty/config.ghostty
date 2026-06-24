@@ -1,0 +1,20 @@
+# Themes
+theme = TokyoNight
+#theme = Rose Pine Moon
+#theme = catppuccin-latte
+#theme = catppuccin-frappe
+#theme = Catppuccin Mocha
+
+font-family = "JetBrainsMono Nerd Font"
+
+window-padding-x = 10
+
+window-padding-y = 10
+
+quit-after-last-window-closed = true
+
+# Focus on the active pane
+unfocused-split-opacity = 0.75
+unfocused-split-fill = #000000
+split-divider-color = #729fcf
+
