@@ -5,7 +5,8 @@
 - Role: primary dotfiles maintainer
 - Neovim: synced
 - Ghostty: installed and configured
-- Dotfiles repo: cloned and current
+- Dotfiles repository: relocated to `~/.dotfiles`
+- Zsh: refactored shared/platform-specific configuration deployed and verified
 - Python: Homebrew Python 3.14
 - Python tools: pipx-managed Black and Ruff
 - Shared venv: `~/.venvs/sandbox`
@@ -14,22 +15,22 @@
 
 - Role: portable macOS machine
 - Neovim: synced
-- Ghostty: planned / partially adopted
-- Dotfiles repo: pending clone or sync
+- Ghostty: installed
+- Dotfiles repository: pending synchronization with latest architecture
 - Python: needs comparison with iMac standard
 
 ## Arch Linux
 
 - Role: Linux development machine
 - Neovim: synced
-- Ghostty: pending install
-- Dotfiles repo: cloned
-- Arch-specific zsh and Git config preserved
+- Ghostty: installed
+- Dotfiles repository: cloned
+- Zsh: awaiting synchronization with latest architecture
 - Python: needs comparison with iMac standard
 
 ## Notes
 
-- iMac is currently the source of truth for dotfiles curation.
+- GitHub is the canonical source of truth.
+- The iMac is currently the primary maintainer machine.
 - Neovim is maintained in a separate GitHub repository.
-- Dotfiles are currently copied into the repo, not yet symlinked.
-- Future work may introduce GNU Stow or another symlink strategy.
+- GNU Stow integration is the next planned architectural milestone.
