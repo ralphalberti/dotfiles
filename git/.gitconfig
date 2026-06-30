@@ -1,3 +1,6 @@
 [user]
-	name = Ralph Alberti
-	email = ralphalberti21@gmail.com
+    name = Ralph Alberti
+    email = ralphalberti21@gmail.com
+
+[init]
+    defaultBranch = main
