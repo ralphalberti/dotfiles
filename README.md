@@ -22,12 +22,13 @@ zsh/        Zsh configuration
 
 ## Documentation
 
-If you're returning to this project after some time away, start with these documents.
+If you're returning to this project after some time away, these documents provide the quickest path back into the repository.
 
-- `docs/architecture.md` — Overall repository architecture and design.
+- `docs/architecture.md` — Repository architecture and GNU Stow package layout.
+- `docs/developer-toolkit.md` — Core development tools and supporting utilities.
 - `docs/house-conventions.md` — Engineering conventions and maintenance philosophy.
-- `docs/machine-status.md` — Current state of each development machine.
-- `docs/new-machine.md` — Checklist for provisioning a new machine.
+- `docs/machine-status.md` — Current deployment status of all supported machines.
+- `docs/new-machine.md` — Provisioning guide for a new development machine.
 - `ROADMAP.md` — Planned enhancements and future work.
 
 ## Design Principles
@@ -39,9 +40,32 @@ If you're returning to this project after some time away, start with these docum
 - Platform-specific behavior is isolated into small, focused files.
 - Documentation should explain **why** decisions were made, not only **what** they are.
 
+## Deployment
+
+Configuration is deployed using GNU Stow.
+
+Each top-level application directory is maintained as an independent Stow package.
+
+```text
+zsh/
+git/
+ghostty/
+```
+
+Packages are deployed into the home directory using symbolic links.
+
+```bash
+stow zsh
+stow git
+stow ghostty
+```
+
+See `docs/architecture.md` for additional information about the repository structure and package layout.
+
 ## Current Status
 
 - ✅ Multi-platform zsh configuration completed.
 - ✅ Repository relocated to `~/.dotfiles`.
-- 🚧 GNU Stow integration planned.
+- ✅ GNU Stow adopted for deployment of dotfiles.
+- ✅ zsh, git, and Ghostty managed as Stow packages.
 - 🚧 Additional application configurations will be migrated over time.

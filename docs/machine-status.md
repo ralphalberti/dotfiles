@@ -1,36 +1,44 @@
 # Machine Status
 
-## iMac
+This document summarizes the current state of each development machine.
 
-- Role: primary dotfiles maintainer
-- Neovim: synced
-- Ghostty: installed and configured
-- Dotfiles repository: relocated to `~/.dotfiles`
-- Zsh: refactored shared/platform-specific configuration deployed and verified
-- Python: Homebrew Python 3.14
-- Python tools: pipx-managed Black and Ruff
-- Shared venv: `~/.venvs/sandbox`
+| Machine | Status | Notes |
+|----------|:------:|-------|
+| **iMac** | ✅ Complete | Primary dotfiles maintainer. |
+| **MacBook Pro** | ✅ Complete | Portable macOS development machine. |
+| **Arch Linux** | ✅ Complete | Primary Linux development machine. |
 
-## MacBook Pro
+## Shared Configuration
 
-- Role: portable macOS machine
-- Neovim: synced
-- Ghostty: installed
-- Dotfiles repository: pending synchronization with latest architecture
-- Python: needs comparison with iMac standard
+The following configuration is synchronized across all machines.
 
-## Arch Linux
+- GNU Stow deployment
+- Git configuration
+- Zsh configuration
+- Ghostty configuration
+- Dotfiles repository located at `~/.dotfiles`
 
-- Role: Linux development machine
-- Neovim: synced
-- Ghostty: installed
-- Dotfiles repository: cloned
-- Zsh: awaiting synchronization with latest architecture
-- Python: needs comparison with iMac standard
+## Machine-Specific Notes
+
+### iMac
+
+- Homebrew Python 3.14
+- pipx-managed Black and Ruff
+- Shared virtual environment: `~/.venvs/sandbox`
+
+### MacBook Pro
+
+- Mirrors the iMac development environment.
+- Serves as the portable macOS workstation.
+
+### Arch Linux
+
+- Uses the Arch package ecosystem (`pacman`).
+- Platform-specific shell behavior isolated in `arch.zsh`.
 
 ## Notes
 
 - GitHub is the canonical source of truth.
-- The iMac is currently the primary maintainer machine.
+- The iMac remains the primary repository maintainer.
 - Neovim is maintained in a separate GitHub repository.
-- GNU Stow integration is the next planned architectural milestone.
+- Configuration is deployed using GNU Stow.

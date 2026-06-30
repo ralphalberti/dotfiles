@@ -1,5 +1,7 @@
 # Developer Toolkit
 
+This document summarizes the core tools that make up the development environment across all supported machines.
+
 ## Terminal
 
 - Ghostty
@@ -9,13 +11,14 @@
 ## Shell
 
 - zsh
+- GNU Stow
 - zinit
 - zoxide
 
 ## Editor
 
 - Neovim
-- Separate repo: `kickstart-modular.nvim`
+- Configuration maintained in the separate `kickstart-modular.nvim` repository.
 
 ## Core CLI Tools
 
@@ -26,26 +29,45 @@
 - jq
 - ripgrep
 
-## Git
+## Version Control
 
 - Git
-- GitHub SSH
-- Global identity:
-  - Name: Ralph Alberti
-  - Email: ralphalberti21@gmail.com
+- GitHub (SSH authentication)
+
+Global Git identity:
+
+- Name: Ralph Alberti
+- Email: <ralphalberti21@gmail.com>
 
 ## Python
 
 - Homebrew Python on macOS
-- Python on Arch via system packages
-- pipx for global Python CLI tools
-- `~/.venvs/sandbox` for shared/debug sandbox work
+- System Python on Arch Linux
+- pipx for globally installed Python CLI tools
+- Shared virtual environment: `~/.venvs/sandbox`
 
-## JavaScript / Node
+Common Python tools:
+
+- Black
+- Ruff
+
+## JavaScript
 
 - Node.js
 - npm
-- Global tools:
-  - markdownlint-cli
-  - prettier
-  - prettierd
+
+Global tools:
+
+- markdownlint-cli
+- prettier
+- prettierd
+
+## Deployment
+
+Configuration is managed in the `~/.dotfiles` repository and deployed using GNU Stow.
+
+Current application packages:
+
+- zsh
+- git
+- ghostty
