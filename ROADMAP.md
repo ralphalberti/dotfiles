@@ -2,26 +2,36 @@
 
 ## Completed
 
-- Initial dotfiles repository
-- Ghostty configuration captured
-- zsh configuration snapshots captured
-- Git configuration snapshots captured
-- Machine status documentation
-- New machine setup notes
-- Arch-specific shell and Git config preserved
+- ✅ Established a dedicated `~/.dotfiles` repository.
+- ✅ Adopted GNU Stow for configuration deployment.
+- ✅ Modularized zsh into shared and platform-specific components.
+- ✅ Standardized Git configuration across all machines.
+- ✅ Added Ghostty as a managed configuration package.
+- ✅ Synchronized iMac, MacBook Pro, and Arch Linux.
+- ✅ Documented repository architecture, toolkit, machine status, and provisioning workflow.
 
-## Next
+## Near Term
 
-- Refactor zsh into common, macOS, and Arch-specific files
-- Add bootstrap scripts for macOS and Arch
-- Document core developer toolkit
-- Decide on GNU Stow layout
-- Add machine-specific notes where needed
+- Tag the initial stable release (`v1.0.0`).
+- Continue refining documentation as the repository evolves.
+- Remove temporary pre-Stow backup files after sufficient validation.
+- Periodically review repository structure and documentation for clarity.
 
-## Future
+## Future Packages
 
-- Use GNU Stow or symlinks for managed config files
-- Add install scripts for common packages
-- Add macOS setup notes
-- Add Arch setup notes
-- Consider tracking additional configs as they stabilize
+Potential configuration packages include:
+
+- tmux
+- lazygit
+- starship
+- wezterm
+- aerospace (macOS)
+- additional terminal and shell tooling as they mature
+
+Packages should be added only after their configuration has stabilized.
+
+## Long-Term Goals
+
+- Maintain a single, reproducible development environment across supported platforms.
+- Keep platform-specific configuration isolated while maximizing shared configuration.
+- Treat the repository as a living engineering project with clear documentation, clean Git history, and reproducible deployment.
