@@ -50,6 +50,7 @@ Each top-level application directory is maintained as an independent Stow packag
 zsh/
 git/
 ghostty/
+dircolors/
 ```
 
 Packages are deployed into the home directory using symbolic links.
@@ -58,6 +59,7 @@ Packages are deployed into the home directory using symbolic links.
 stow zsh
 stow git
 stow ghostty
+stow dircolors
 ```
 
 See `docs/architecture.md` for additional information about the repository structure and package layout.
@@ -67,5 +69,20 @@ See `docs/architecture.md` for additional information about the repository struc
 - ✅ Multi-platform zsh configuration completed.
 - ✅ Repository relocated to `~/.dotfiles`.
 - ✅ GNU Stow adopted for deployment of dotfiles.
-- ✅ zsh, git, and Ghostty managed as Stow packages.
-- 🚧 Additional application configurations will be migrated over time.
+- ✅ zsh, git, Ghostty, and dircolors managed as Stow packages.
+- 🚧 Additional application packages will be added over time.
+
+## Architecture Diagram
+
+~/.dotfiles
+│
+├── dircolors
+├── ghostty
+├── git
+└── zsh
+     │
+     ▼
+GNU Stow
+     │
+     ▼
+Home directory

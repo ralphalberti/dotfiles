@@ -113,3 +113,14 @@ The repository follows a few guiding principles.
 - Shared configuration is preferred over duplicated configuration.
 - Platform-specific differences should remain small and isolated.
 - Documentation explains why decisions were made, not only what they are.
+
+## Current Stow Packages
+
+The repository currently manages the following application packages:
+
+- `zsh`
+- `git`
+- `ghostty`
+- `dircolors`
+
+Each package is self-contained and can be deployed independently using GNU Stow.

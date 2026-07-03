@@ -13,6 +13,8 @@ All notable changes to this repository will be documented in this file.
 - Added documentation for provisioning a new machine.
 - Added repository architecture documentation.
 - Added engineering house conventions.
+- Added `dircolors` as a GNU Stow package.
+- Standardized file color configuration across macOS and Arch Linux.
 
 ### Changed
 

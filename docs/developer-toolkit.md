@@ -71,3 +71,4 @@ Current application packages:
 - zsh
 - git
 - ghostty
+- dircolors
