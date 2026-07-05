@@ -230,15 +230,13 @@ Host archdev
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
   RequestTTY yes
-  RemoteCommand systemd-inhibit --what=idle --why="Remote development" \
-    zsh -c 'exec zsh'
+  RemoteCommand systemd-inhibit --what=idle --why="Remote development" zsh -l
 ```
 
-To start in `~/Projects` instead:
+To start in `~/Projects` instead, replace the active `RemoteCommand` with:
 
 ```sshconfig
-RemoteCommand systemd-inhibit --what=idle --why="Remote development" \
-  zsh -c 'cd ~/Projects && exec zsh'
+RemoteCommand systemd-inhibit --what=idle --why="Remote development" zsh -lc 'cd ~/Projects && exec zsh -l'
 ```
 
 ---
@@ -259,8 +257,7 @@ Host archgolf
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
   RequestTTY yes
-  RemoteCommand systemd-inhibit --what=idle --why="Golf Club App" \
-    zsh -c 'cd ~/Projects/Python/golf_club_app && exec zsh'
+  RemoteCommand systemd-inhibit --what=idle --why="Golf Club App" zsh -lc 'cd ~/Projects/Python/golf_club_app && exec zsh -l'
 ```
 
 ---
