@@ -1,6 +1,46 @@
-# SSH & Remote Development Cheat Sheet
+# SSH & Remote Development Reference
 
-Quick reference for remote development across the iMac, MacBook Pro, and Arch Linux systems.
+Quick reference for remote development across the iMac, MacBook Pro, and
+Arch Linux systems.
+
+---
+
+# Machine Roles
+
+| Machine | Role |
+|----------|------|
+| iMac | Primary command center |
+| MacBook Pro | Mobile development machine |
+| Arch Linux | Primary Linux development environment |
+
+---
+
+# Reserved Addresses
+
+DHCP reservations are configured in eero to ensure stable addressing.
+
+| Host | Address |
+|------|---------|
+| imac | 192.168.4.140 |
+| arch | 192.168.5.188 |
+| macbook | 192.168.5.190 |
+
+---
+
+# SSH Host Aliases
+
+Common aliases available via `~/.ssh/config`.
+
+```text
+github.com
+
+imac
+macbook
+
+arch
+archdev
+archgolf
+```
 
 ---
 
@@ -12,13 +52,13 @@ ssh macbook
 ssh arch
 ```
 
-Exit the remote session:
+Exit a remote session:
 
 ```bash
 exit
 ```
 
-or press:
+or:
 
 ```text
 Ctrl+D
@@ -48,7 +88,7 @@ ssh macbook 'cd ~/.dotfiles && git pull'
 
 ---
 
-# Copy Files (scp)
+# SCP Examples
 
 Copy a file to another machine:
 
@@ -84,35 +124,9 @@ scp -r Projects/MyProject arch:~/Projects/
 
 ---
 
-# Remote Editing with Neovim
+# SFTP
 
-Open a remote file over SSH:
-
-```bash
-nvim scp://arch//home/ralph/.zshrc
-```
-
-Open a remote file on macOS:
-
-```bash
-nvim scp://macbook//Users/ralphalberti/.zshrc
-```
-
-Open a remote project file:
-
-```bash
-nvim scp://arch//home/ralph/.dotfiles/README.md
-```
-
-> **Note**
->
-> Absolute remote paths require the double slash (`//`) after the hostname.
-
----
-
-# Interactive File Transfer
-
-Connect with SFTP:
+Connect:
 
 ```bash
 sftp arch
@@ -134,9 +148,9 @@ exit
 
 ---
 
-# Synchronize Directories
+# Rsync
 
-Synchronize a directory using rsync:
+Synchronize a directory:
 
 ```bash
 rsync -av ~/Projects/ arch:~/Projects/
@@ -144,21 +158,45 @@ rsync -av ~/Projects/ arch:~/Projects/
 
 ---
 
+# Remote Editing with Neovim
+
+Open a remote file over SSH:
+
+```bash
+nvim scp://arch//home/ralph/.zshrc
+```
+
+Open a remote macOS file:
+
+```bash
+nvim scp://macbook//Users/ralphalberti/.zshrc
+```
+
+Open a remote project file:
+
+```bash
+nvim scp://arch//home/ralph/.dotfiles/README.md
+```
+
+Absolute remote paths require the double slash (`//`) after the hostname.
+
+---
+
 # SSH Configuration
 
-View the SSH configuration:
+View:
 
 ```bash
 bat ~/.ssh/config
 ```
 
-Edit the SSH configuration:
+Edit:
 
 ```bash
 nvim ~/.ssh/config
 ```
 
-Verify the configuration for a host:
+Verify the resulting configuration:
 
 ```bash
 ssh -G arch
@@ -166,21 +204,15 @@ ssh -G arch
 
 ---
 
-# Verify Connectivity
+# Connectivity Checks
 
-Ping a machine:
-
-```bash
-ping arch
-```
-
-Test an SSH connection:
+SSH test:
 
 ```bash
 ssh arch
 ```
 
-Run a quick identity check:
+Identity check:
 
 ```bash
 ssh arch 'whoami; pwd; uname -n'
@@ -188,44 +220,27 @@ ssh arch 'whoami; pwd; uname -n'
 
 ---
 
-# Common Host Aliases
-
-```text
-github.com
-
-arch
-archdev
-archgolf
-
-macbook
-```
-
----
-
 # Project-Specific SSH Hosts
 
-Host aliases can represent more than just machines—they can represent
-development workspaces. A host may automatically:
+SSH aliases can represent workspaces rather than machines.
 
-- connect to a specific machine
-- prevent idle suspend during the session
-- open in a project directory
-- start an interactive shell ready for development
-
-## General Development Session
+## General Development
 
 ```bash
 ssh archdev
 ```
 
-Connects to the Arch development machine and prevents idle suspend for
-the duration of the SSH session.
+Behavior:
+
+- Connect to Arch
+- Prevent idle suspend
+- Start an interactive shell
 
 Current configuration:
 
 ```sshconfig
 Host archdev
-  HostName 192.168.5.170
+  HostName 192.168.5.188
   User ralph
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
@@ -233,13 +248,11 @@ Host archdev
   RemoteCommand systemd-inhibit --what=idle --why="Remote development" zsh -l
 ```
 
-To start in `~/Projects` instead, replace the active `RemoteCommand` with:
+Optional alternative:
 
 ```sshconfig
 RemoteCommand systemd-inhibit --what=idle --why="Remote development" zsh -lc 'cd ~/Projects && exec zsh -l'
 ```
-
----
 
 ## Golf Club App Workspace
 
@@ -247,12 +260,15 @@ RemoteCommand systemd-inhibit --what=idle --why="Remote development" zsh -lc 'cd
 ssh archgolf
 ```
 
-Connects to the Arch machine, prevents idle suspend, and opens directly
-into the Golf Club App project.
+Behavior:
+
+- Connect to Arch
+- Prevent idle suspend
+- Open directly into the Golf Club App project
 
 ```sshconfig
 Host archgolf
-  HostName 192.168.5.170
+  HostName 192.168.5.188
   User ralph
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
@@ -262,64 +278,86 @@ Host archgolf
 
 ---
 
-## Why This Is Useful
+# Machine SSH Keys
 
-Instead of thinking about *which computer* you want to connect to, think
-about *which workspace* you want to enter.
+Each machine maintains two independent SSH identities.
+
+## GitHub Keys
+
+| Machine | Key |
+|----------|-----|
+| iMac | github_imac |
+| MacBook | github_macbook |
+| Arch | github_key |
+
+Used only for GitHub authentication.
+
+## Remote Login Keys
+
+| Machine | Key |
+|----------|-----|
+| iMac | imac_ssh |
+| MacBook | macbook_ssh |
+| Arch | arch_ssh |
+
+Used only for machine-to-machine SSH access.
+
+This separation allows GitHub and infrastructure credentials to be
+rotated independently.
+
+---
+
+# Ghostty Support
+
+Ghostty uses:
+
+```text
+TERM=xterm-ghostty
+```
+
+Remote systems must have the Ghostty terminfo definition installed.
+
+Install:
+
+```bash
+infocmp -x xterm-ghostty | ssh imac 'tic -x -'
+```
 
 Examples:
 
-| Command | Purpose |
+```bash
+infocmp -x xterm-ghostty | ssh macbook 'tic -x -'
+infocmp -x xterm-ghostty | ssh arch 'tic -x -'
+```
+
+Symptoms of a missing terminfo definition include:
+
+- duplicated characters
+- duplicated prompts
+- broken `clear`
+- `xterm-ghostty: unknown terminal type`
+
+---
+
+# Philosophy
+
+Host aliases should represent destinations of intent rather than simply
+machines.
+
+Examples:
+
+| Command | Meaning |
 |---------|---------|
-| `ssh arch` | General login to the Arch machine |
-| `ssh archdev` | General remote development session |
-| `ssh archgolf` | Golf Club App development workspace |
+| `ssh arch` | Access the Arch machine |
+| `ssh archdev` | Enter a general development workspace |
+| `ssh archgolf` | Enter the Golf Club App workspace |
 
-This approach scales naturally as additional long-lived projects are
-created.
-
-Examples:
+As additional long-lived projects are created, additional workspace
+aliases can be introduced:
 
 - `archdotfiles`
 - `archnvim`
 - `archdjango`
 
-Each host becomes a named development workspace rather than simply a
-network connection.
-
----
-
-# Machine-to-Machine SSH Keys
-
-Each machine has two SSH identities:
-
-## GitHub
-
-```text
-github_imac
-github_macbook
-github_key        (Arch)
-```
-
-Used only for GitHub authentication.
-
-## Remote Login
-
-```text
-imac_ssh
-macbook_ssh
-arch_ssh
-```
-
-Used only for SSH between personal machines.
-
-This separation keeps GitHub authentication independent from remote administration.
-
----
-
-# Notes
-
-- GitHub and machine SSH use separate key pairs.
-- All machines use `~/.ssh/config` host aliases.
-- Passwordless authentication uses Ed25519 keys.
-- The iMac serves as the primary Command Center.
+This scales better than remembering IP addresses, usernames, and project
+paths.
