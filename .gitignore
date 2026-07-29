@@ -1,1 +1,4 @@
 .DS_Store
+
+# Private information (not tracked by Git)
+private/
