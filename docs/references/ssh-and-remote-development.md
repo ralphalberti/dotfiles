@@ -21,9 +21,9 @@ DHCP reservations are configured in eero to ensure stable addressing.
 
 | Host | Address |
 |------|---------|
-| imac | 192.168.4.140 |
-| arch | 192.168.5.188 |
-| macbook | 192.168.5.190 |
+| imac | 192.168.5.181 |
+| macbook | 192.168.5.182 |
+| arch | 192.168.5.183 |
 
 ---
 
@@ -220,6 +220,82 @@ ssh arch 'whoami; pwd; uname -n'
 
 ---
 
+# Troubleshooting `known_hosts`
+
+SSH stores the identity of previously contacted systems in
+`~/.ssh/known_hosts`. If a machine receives a new IP address, SSH may report
+that the current host key is already known under one or more previous
+addresses.
+
+A typical warning looks like this:
+
+```text
+The authenticity of host '192.168.5.183 (192.168.5.183)' can't be established.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:4: 192.168.5.170
+    ~/.ssh/known_hosts:11: 192.168.5.182
+    ~/.ssh/known_hosts:12: 192.168.5.188
+```
+
+Before accepting a host key, confirm that the displayed fingerprint belongs to
+the intended machine. A changed fingerprint can be expected after reinstalling
+an operating system or regenerating SSH host keys, but an unexplained change
+should be investigated.
+
+## Inspect a Stored Entry
+
+Use `ssh-keygen -F` to find an entry without manually searching the file:
+
+```bash
+ssh-keygen -F 192.168.5.170
+```
+
+No output means that no matching entry was found.
+
+## Remove an Obsolete Entry
+
+Use `ssh-keygen -R` to safely remove an old hostname or IP address:
+
+```bash
+ssh-keygen -R 192.168.5.170
+```
+
+This is preferred over manually editing `~/.ssh/known_hosts` because the
+command understands plain and hashed entries, removes all matches, and creates
+a backup named `known_hosts.old`.
+
+Remove each obsolete address separately when a machine has accumulated several
+old DHCP addresses:
+
+```bash
+ssh-keygen -R 192.168.5.170
+ssh-keygen -R 192.168.5.182
+ssh-keygen -R 192.168.5.188
+```
+
+After cleanup, reconnect using the SSH alias:
+
+```bash
+ssh arch
+```
+
+SSH will prompt to confirm the machine's current host key and then record it
+for the reserved address.
+
+## Verify the Effective SSH Configuration
+
+When an alias appears to use the wrong address, inspect the configuration SSH
+actually resolved:
+
+```bash
+ssh -G arch | grep -E '^(hostname|user|identityfile) '
+```
+
+If the `hostname` value does not match the eero reservation, update the
+corresponding `HostName` in `~/.ssh/config`.
+
+---
+
 # Project-Specific SSH Hosts
 
 SSH aliases can represent workspaces rather than machines.
@@ -240,7 +316,7 @@ Current configuration:
 
 ```sshconfig
 Host archdev
-  HostName 192.168.5.188
+  HostName 192.168.5.183
   User ralph
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
@@ -268,7 +344,7 @@ Behavior:
 
 ```sshconfig
 Host archgolf
-  HostName 192.168.5.188
+  HostName 192.168.5.183
   User ralph
   IdentityFile ~/.ssh/imac_ssh
   IdentitiesOnly yes
