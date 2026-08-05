@@ -85,7 +85,7 @@ bindkey '^[w' kill-region               # Alt-W: delete the selected text region
 # duplicate entries and preserving useful command history.
 #------------------------------------------------------------------------------
 
-HISTSIZE=5000
+HISTSIZE=10000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
 
