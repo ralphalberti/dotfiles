@@ -6,6 +6,7 @@
 
 # Use GNU ls from Homebrew coreutils.
 alias ls='gls --color=auto'
+alias files='ls -lG *(.N)'
 
 # Load GNU dircolors from Homebrew coreutils.
 eval "$(gdircolors -b ~/.dircolors)"
