@@ -21,7 +21,7 @@ ssh-add -l >/dev/null 2>&1 || ssh-add ~/.ssh/github_key >/dev/null 2>&1
 # Aliases that are specific to the Arch Linux environment.
 #------------------------------------------------------------------------------
 
-alias ls='ls --color'
+#alias ls='ls --color' #Can remove this line if ls still works
 alias files="find . -maxdepth 1 -type f -printf '%f\0' | xargs -0 -r ls -l --color=auto"
 
 # Update the Arch keyring before performing a full system upgrade.
