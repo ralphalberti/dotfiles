@@ -85,8 +85,9 @@ Remote administration is performed almost entirely over SSH.
 
 # Networking
 
-- **Mullvad VPN** — Privacy-focused VPN service used across all supported machines.
-- **WireGuard** — Modern VPN protocol used by Mullvad to establish encrypted tunnels.
+- **Tailscale** — Private overlay network connecting the iMac, MacBook Pro, and Arch Linux systems while preserving direct LAN access.
+- **Mullvad Exit Nodes** — Optional VPN-protected Internet egress provided through the Tailscale Mullvad integration.
+- **WireGuard** — Secure tunneling technology underlying Tailscale and Mullvad connectivity.
 
 ---
 
@@ -108,7 +109,7 @@ Documentation is maintained alongside configuration using Git.
 
 ## Linux
 
-- **qBittorrent** — Torrent client configured to operate through the Mullvad VPN.
+- **qBittorrent** — Torrent client on Arch Linux bound to `tailscale0` and verified to use Mullvad exit-node egress without falling back to the normal ISP path during fail-closed testing.
 
 Platform-specific tools remain intentionally small.
 
@@ -172,3 +173,4 @@ The toolkit is intentionally curated.
 
 - [Home Network](home-network.md)
 - [SSH & Remote Development](references/ssh-and-remote-development.md)
+- [Tailscale & Mullvad](references/tailscale-and-mullvad.md)

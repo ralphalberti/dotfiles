@@ -1,7 +1,36 @@
 # SSH & Remote Development Reference
 
-Quick reference for remote development across the iMac, MacBook Pro, and
-Arch Linux systems.
+Quick reference for remote development across the iMac, MacBook Pro, and Arch Linux systems.
+
+---
+
+# About This Document
+
+This document describes SSH-based machine access, file transfer, remote editing, host aliases, SSH keys, and troubleshooting across the three primary computers.
+
+LAN and Tailscale transport paths are both supported. Detailed Tailscale and Mullvad architecture is documented separately in `docs/references/tailscale-and-mullvad.md`.
+
+## Contents
+
+- [Machine Roles](#machine-roles)
+- [Reserved Addresses](#reserved-addresses)
+- [SSH Host Aliases](#ssh-host-aliases)
+- [Connect to a Machine](#connect-to-a-machine)
+- [Run Remote Commands](#run-remote-commands)
+- [SCP Examples](#scp-examples)
+- [Copy Directories](#copy-directories)
+- [SFTP](#sftp)
+- [Rsync](#rsync)
+- [Remote Editing with Neovim](#remote-editing-with-neovim)
+- [SSH Configuration](#ssh-configuration)
+- [Connectivity Checks](#connectivity-checks)
+- [Troubleshooting `known_hosts`](#troubleshooting-known_hosts)
+- [Tailscale SSH Hosts](#tailscale-ssh-hosts)
+- [Project-Specific SSH Hosts](#project-specific-ssh-hosts)
+- [Machine SSH Keys](#machine-ssh-keys)
+- [Ghostty Support](#ghostty-support)
+- [Philosophy](#philosophy)
+- [Related Documentation](#related-documentation)
 
 ---
 
@@ -36,21 +65,41 @@ github.com
 
 imac
 macbook
-
 arch
+
+imac-ts
+macbook-ts
+arch-ts
+
 archdev
 archgolf
 ```
 
+The short machine aliases use the home LAN. Aliases ending in `-ts` use Tailscale.
+
+Not every machine defines an alias for itself. Each `~/.ssh/config` contains only the destinations that are useful from that machine.
+
 ---
 
 # Connect to a Machine
+
+LAN access:
 
 ```bash
 ssh imac
 ssh macbook
 ssh arch
 ```
+
+Tailscale access:
+
+```bash
+ssh imac-ts
+ssh macbook-ts
+ssh arch-ts
+```
+
+Use the alias appropriate for the destination and current machine. The `-ts` suffix makes the Tailscale transport path explicit.
 
 Exit a remote session:
 
@@ -206,11 +255,19 @@ ssh -G arch
 
 # Connectivity Checks
 
-SSH test:
+LAN SSH test:
 
 ```bash
 ssh arch
 ```
+
+Tailscale SSH test:
+
+```bash
+ssh arch-ts
+```
+
+Testing both aliases independently helps distinguish LAN connectivity from Tailscale connectivity.
 
 Identity check:
 
@@ -288,11 +345,46 @@ When an alias appears to use the wrong address, inspect the configuration SSH
 actually resolved:
 
 ```bash
-ssh -G arch | grep -E '^(hostname|user|identityfile) '
+ssh -G arch | grep -E '^(hostname|user|identityfile|identitiesonly) '
 ```
 
 If the `hostname` value does not match the eero reservation, update the
 corresponding `HostName` in `~/.ssh/config`.
+
+---
+
+# Tailscale SSH Hosts
+
+Tailscale aliases use the same OpenSSH service and machine-specific SSH keys as LAN aliases, but resolve the destination through the Tailscale tailnet.
+
+Example from the iMac:
+
+```sshconfig
+Host arch-ts
+  HostName archlatitude
+  User ralph
+  IdentityFile ~/.ssh/imac_ssh
+  IdentitiesOnly yes
+```
+
+The equivalent LAN alias continues to use the reserved local address:
+
+```sshconfig
+Host arch
+  HostName 192.168.5.183
+  User ralph
+  IdentityFile ~/.ssh/imac_ssh
+  IdentitiesOnly yes
+```
+
+This separation makes the desired network path visible at the command line:
+
+```text
+ssh arch       -> home LAN
+ssh arch-ts    -> Tailscale
+```
+
+The Tailscale mesh, exit-node behavior, and Mullvad integration are documented in `docs/references/tailscale-and-mullvad.md`.
 
 ---
 
@@ -437,3 +529,17 @@ aliases can be introduced:
 
 This scales better than remembering IP addresses, usernames, and project
 paths.
+
+---
+
+# Related Documentation
+
+## Networking
+
+- [Home Network](../home-network.md)
+- [Tailscale & Mullvad](tailscale-and-mullvad.md)
+
+## Environment
+
+- [Architecture](../architecture.md)
+- [Developer Toolkit](../developer-toolkit.md)

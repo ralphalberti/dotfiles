@@ -194,7 +194,8 @@ These documents describe the development environment and workstation configurati
 
 ### Networking
 
-These documents describe the home network and remote administration.
+These documents describe the home network, private overlay networking, VPN egress, and remote administration.
 
 - [Home Network](home-network.md)
 - [SSH & Remote Development](references/ssh-and-remote-development.md)
+- [Tailscale & Mullvad](references/tailscale-and-mullvad.md)

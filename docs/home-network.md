@@ -1,7 +1,7 @@
 # Home Network Documentation
 
-**Version:** 1.0  
-**Last Updated:** 2026-07-29  
+**Version:** 1.1
+**Last Updated:** 2026-08-14
 **Status:** Living Document
 
 ---
@@ -10,7 +10,7 @@
 - **Community:** Del Webb
 - **Location:** Lakewood Ranch, Florida
 - **ISP:** Frontier Fiber (2 Gig Service)
-- **Last Verified:** July 2026
+- **Last Verified:** August 2026
 
 # Purpose
 
@@ -541,7 +541,9 @@ Known services include:
 - Firewall protection
 - Wireless network management
 
-Additional services may be provided by Frontier or other network devices and will be documented as they are identified.
+Tailscale provides a separate private overlay network between the iMac, MacBook Pro, and Arch Linux systems. It does not replace the home LAN or the eero Gateway. Mullvad exit nodes can optionally provide VPN-protected Internet egress for individual Tailscale devices.
+
+Detailed Tailscale, Mullvad, and qBittorrent behavior is documented in `docs/references/tailscale-and-mullvad.md`.
 
 ## Service Responsibilities
 
@@ -577,7 +579,6 @@ The following items may be documented in a future revision:
 - IPv6 configuration.
 - Guest network configuration.
 - Port forwarding configuration (if required).
-- VPN configuration after implementation.
 
 # Maintenance
 
@@ -605,6 +606,7 @@ The following documents should be updated whenever the network changes:
 
 - `docs/home-network.md`
 - `docs/cable-map.md`
+- `docs/references/tailscale-and-mullvad.md` (when Tailscale or Mullvad configuration changes)
 - `private/network-secrets.md` (when sensitive information changes)
 
 ## Future Maintenance
@@ -644,6 +646,13 @@ Check the following:
 - Check switch link/activity indicators.
 - Confirm the cable is connected to the expected switch port.
 - Refer to `docs/cable-map.md` for current cable assignments.
+
+## Related Documentation
+
+Detailed overlay networking, VPN egress, and remote-access information is maintained separately in:
+
+- `docs/references/tailscale-and-mullvad.md`
+- `docs/references/ssh-and-remote-development.md`
 
 ## Lessons Learned
 

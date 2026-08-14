@@ -76,6 +76,7 @@ private/
 
 - `docs/home-network.md`
 - `docs/references/ssh-and-remote-development.md`
+- `docs/references/tailscale-and-mullvad.md`
 
 ### Operations
 
@@ -130,7 +131,7 @@ See `docs/architecture.md` for additional information.
 - ✅ Git configuration standardized
 - ✅ SSH standardized across all machines
 - ✅ Reserved DHCP addressing
-- ✅ Mullvad VPN deployed
+- ✅ Tailscale mesh and Mullvad exit nodes deployed
 - ✅ MarkText deployed
 - 🚧 Documentation refinement in progress
 
