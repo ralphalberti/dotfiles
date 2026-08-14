@@ -1,74 +1,174 @@
 # Developer Toolkit
 
-This document summarizes the core tools that make up the development environment across all supported machines.
+This document describes the software tools that make up the development environment across all supported machines.
+
+The goal is to maintain a consistent, productive, and easily reproducible toolchain across macOS and Arch Linux.
+
+---
+
+# Core Development Environment
 
 ## Terminal
 
-- Ghostty
-- JetBrainsMono Nerd Font
-- TokyoNight theme
+- **Ghostty** — Primary terminal emulator on all supported machines.
+- **JetBrainsMono Nerd Font** — Programming font with integrated Nerd Font icons.
+- **TokyoNight** — Preferred terminal color theme.
 
-## Shell
+---
 
-- zsh
-- GNU Stow
-- zinit
-- zoxide
+## Shell Environment
+
+- **Zsh** — Primary interactive shell on all supported machines.
+- **GNU Stow** — Deploys configuration by creating symbolic links from the repository into the home directory.
+- **zinit** — Plugin manager for loading and managing Zsh plugins.
+- **zoxide** — Smart directory jumper that learns frequently visited locations.
+
+---
 
 ## Editor
 
-- Neovim
-- Configuration maintained in the separate `kickstart-modular.nvim` repository.
+- **Neovim** — Primary editor for software development, documentation, and Git workflows.
+- Configuration is maintained in the separate `kickstart-modular.nvim` repository.
 
-## Core CLI Tools
+---
 
-- bat
-- eza
-- fd
-- fzf
-- jq
-- ripgrep
-
-## Version Control
-
-- Git
-- GitHub (SSH authentication)
-
-Global Git identity:
-
-- Name: Ralph Alberti
-- Email: <ralphalberti21@gmail.com>
+# Development Languages
 
 ## Python
 
-- Homebrew Python on macOS
-- System Python on Arch Linux
-- pipx for globally installed Python CLI tools
-- Shared virtual environment: `~/.venvs/sandbox`
+- **Homebrew Python** — Standard Python installation on macOS.
+- **System Python** — Standard Python installation on Arch Linux.
+- **pipx** — Installs Python command-line applications into isolated virtual environments.
+- **Shared virtual environment** (`~/.venvs/sandbox`) — Common Python environment created with Python's built-in `venv` module and shared by development tools such as Neovim and `debugpy`.
 
-Common Python tools:
+### Common Python Tools
 
-- Black
-- Ruff
+- **Ruff** — Extremely fast Python linter and formatter.
+- **Black** — Opinionated Python code formatter that produces consistent, readable code.
+
+---
 
 ## JavaScript
 
-- Node.js
-- npm
+- **Node.js** — JavaScript runtime used by many development tools.
+- **npm** — Package manager used to install JavaScript packages and command-line utilities.
 
-Global tools:
+### Global Tools
 
-- markdownlint-cli
-- prettier
-- prettierd
+- **markdownlint-cli** — Checks Markdown files for style and formatting issues.
+- **prettier** — Formats Markdown, JSON, JavaScript, YAML, and many other file types.
+- **prettierd** — Background service that keeps Prettier running for much faster formatting.
 
-## Deployment
+---
 
-Configuration is managed in the `~/.dotfiles` repository and deployed using GNU Stow.
+# Version Control
 
-Current application packages:
+- **Git** — Distributed version control system used for source code, documentation, and configuration.
+- **GitHub** — Remote repository hosting using SSH authentication.
 
-- zsh
-- git
-- ghostty
-- dircolors
+### Global Git Identity
+
+- **Name** — Ralph Alberti
+- **Email** — <ralphalberti21@gmail.com>
+
+---
+
+# Remote Development
+
+- **SSH** — Secure remote shell used to administer the other development machines.
+- **SCP** — Secure file copy over SSH.
+- **rsync** — Efficiently synchronizes files and directories between systems while transferring only changed data.
+
+Remote administration is performed almost entirely over SSH.
+
+---
+
+# Networking
+
+- **Mullvad VPN** — Privacy-focused VPN service used across all supported machines.
+- **WireGuard** — Modern VPN protocol used by Mullvad to establish encrypted tunnels.
+
+---
+
+# Documentation
+
+- **MarkText** — Primary Markdown editor for reviewing and maintaining documentation.
+- **Markdown** — Standard format used throughout the documentation.
+- **Mermaid** — Diagram language used to visualize architecture and workflows.
+
+Documentation is maintained alongside configuration using Git.
+
+---
+
+# Productivity
+
+## macOS
+
+- **Raycast** — Application launcher and productivity utility.
+
+## Linux
+
+- **qBittorrent** — Torrent client configured to operate through the Mullvad VPN.
+
+Platform-specific tools remain intentionally small.
+
+---
+
+# Command-Line Utilities
+
+- **bat** — Improved replacement for `cat` with syntax highlighting.
+- **GNU ls** — Primary directory listing utility enhanced with custom aliases and glob patterns.
+- **eza** — Modern directory listing utility with rich formatting and tree views.
+- **fd**— Simple and fast alternative to `find`.
+- **fzf** — Interactive fuzzy finder for files, directories, commands, and history.
+- **jq** — Command-line processor for parsing, filtering, and formatting JSON.
+- **ripgrep** — Extremely fast recursive text search utility.
+
+---
+
+# Deployment
+
+Configuration is maintained in `~/.dotfiles` and deployed using GNU Stow.
+
+Managed packages:
+
+- `dircolors`
+- `ghostty`
+- `git`
+- `zsh`
+
+Each package is self-contained and can be deployed independently.
+
+---
+
+# Design Philosophy
+
+The toolkit is intentionally curated.
+
+- Prefer one excellent tool over several similar tools.
+- Standardize tools across all supported machines whenever practical.
+- Keep platform-specific differences to a minimum.
+- Document significant tools and workflows.
+- Choose tools that integrate well with Git and Markdown.
+- Favor simplicity, consistency, and long-term maintainability.
+
+---
+
+# Related Documentation
+
+### Repository
+
+- [README](../README.md)
+- [Architecture](architecture.md)
+- [House Conventions](house-conventions.md)
+- [Documentation Standards](documentation-standards.md)
+
+### Environment
+
+- [Machine Status](machine-status.md)
+- [New Machine](new-machine.md)
+
+### Networking
+
+- [Home Network](home-network.md)
+- [SSH & Remote Development](references/ssh-and-remote-development.md)

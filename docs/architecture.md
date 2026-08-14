@@ -1,126 +1,200 @@
 # Architecture
 
-This repository manages a personal development environment across macOS and Arch Linux.
+This document describes the architectural design of the dotfiles repository and the conventions used to maintain a consistent development environment across macOS and Arch Linux.
 
-The primary goals are:
+Rather than simply storing configuration files, the repository defines the structure, deployment strategy, and engineering principles that allow multiple computers to behave as one familiar development environment.
 
-- Maintain a consistent development environment across multiple machines.
-- Keep configuration modular and easy to understand.
-- Store all configuration in Git.
-- Deploy configuration safely using GNU Stow.
+---
 
-## Repository Location
+# Architecture Overview
 
-The dotfiles repository lives in:
+The environment is organized as a layered architecture.
+
+```mermaid
+flowchart TD
+
+    GH["GitHub Repository"]
+
+    DF["~/.dotfiles"]
+
+    STOW["GNU Stow"]
+
+    HOME["Home Directory"]
+
+    IMAC["iMac"]
+    MBP["MacBook Pro"]
+    ARCH["ArchLatitude"]
+
+    GH --> DF
+    DF --> STOW
+    STOW --> HOME
+
+    HOME --> IMAC
+    HOME --> MBP
+    HOME --> ARCH
+```
+
+Each layer has a specific responsibility:
+
+| Layer                | Responsibility                                            |
+| -------------------- | --------------------------------------------------------- |
+| GitHub               | Canonical source of truth and version history             |
+| `~/.dotfiles`        | Local working copy of the repository                      |
+| GNU Stow             | Deploys configuration using symbolic links                |
+| Home Directory       | Standard configuration location expected by applications  |
+| Development Machines | Consume a consistent configuration regardless of platform |
+
+---
+
+# Repository Organization
+
+The repository separates documentation from deployable configuration.
 
 ```text
 ~/.dotfiles
-```
-
-Environment configuration belongs in `~/.dotfiles`.
-
-Software development projects belong in `~/Projects`.
-
-## Repository Structure
-
-The repository consists of two types of content.
-
-### Documentation
-
-Repository documentation lives in:
-
-```text
-docs/
-```
-
-These documents describe the architecture, engineering conventions, machine status, and future plans.
-
-### Stow Packages
-
-Each top-level application directory is a GNU Stow package.
-
-```text
-~/.dotfiles/
-├── git/
+├── docs/
+├── dircolors/
 ├── ghostty/
+├── git/
+├── private/
 └── zsh/
 ```
 
-Each package contributes part of the filesystem beneath the user's home directory.
+| Directory    | Purpose                                                            |
+| ------------ | ------------------------------------------------------------------ |
+| `docs/`      | Documentation describing the environment and engineering decisions |
+| `dircolors/` | Shared directory color definitions                                 |
+| `ghostty/`   | Ghostty terminal configuration                                     |
+| `git/`       | Git configuration                                                  |
+| `private/`   | Local documentation excluded from Git                              |
+| `zsh/`       | Modular shell configuration                                        |
 
-## Package Architecture
+Software development projects are intentionally kept outside the repository in:
 
-GNU Stow deploys configuration by creating symbolic links from the home directory into this repository.
+```text
+~/Projects
+```
+
+This keeps environment configuration separate from application development.
+
+---
+
+# GNU Stow Architecture
+
+Configuration is deployed using GNU Stow.
+
+Each top-level application directory represents one independent Stow package.
 
 For example:
 
 ```text
 zsh/
 └── .zshrc
+```
 
-↓
+is deployed as
 
+```text
 ~/.zshrc
 ```
 
-```text
-git/
-└── .gitconfig
-
-↓
-
-~/.gitconfig
-```
+Likewise,
 
 ```text
 ghostty/
 └── .config/
     └── ghostty/
         └── config.ghostty
+```
 
-↓
+becomes
 
+```text
 ~/.config/ghostty/config.ghostty
 ```
 
-The package determines the directory structure beneath the target directory. GNU Stow mirrors that structure using symbolic links.
+GNU Stow mirrors the directory structure beneath each package by creating symbolic links in the user's home directory.
 
-## Zsh Architecture
+---
 
-The zsh configuration is intentionally modular.
+# Zsh Architecture
 
-```text
-.zshrc
-    │
-    ├── common.zsh
-    ├── aliases.zsh
-    └── Platform
-          ├── macos.zsh
-          └── arch.zsh
+The shell configuration is intentionally modular.
+
+```mermaid
+flowchart TD
+
+    ZSH[".zshrc"]
+
+    COMMON["common.zsh"]
+    ALIASES["aliases.zsh"]
+
+    PLATFORM["Platform"]
+
+    MAC["macos.zsh"]
+    ARCH["arch.zsh"]
+
+    ZSH --> COMMON
+    ZSH --> ALIASES
+    ZSH --> PLATFORM
+
+    PLATFORM --> MAC
+    PLATFORM --> ARCH
 ```
 
 Shared behavior is defined once.
 
-Platform-specific behavior is isolated into small, focused files.
+Platform-specific behavior is isolated into small, focused files, allowing each operating system to customize only the pieces that differ.
 
-## Design Principles
+---
 
-The repository follows a few guiding principles.
+# Design Principles
+
+The repository follows a small set of architectural principles.
 
 - GitHub is the canonical source of truth.
-- The repository contains the authoritative configuration.
-- Live configuration is deployed using symbolic links.
+- Configuration should exist in one place.
+- GNU Stow deploys configuration using symbolic links rather than copying files.
 - Shared configuration is preferred over duplicated configuration.
-- Platform-specific differences should remain small and isolated.
-- Documentation explains why decisions were made, not only what they are.
+- Platform-specific behavior should remain small and isolated.
+- Documentation should explain both **why** and **how** decisions were made.
 
-## Current Stow Packages
+---
 
-The repository currently manages the following application packages:
+# Managed Packages
 
-- `zsh`
-- `git`
-- `ghostty`
+The repository currently manages the following Stow packages.
+
 - `dircolors`
+- `ghostty`
+- `git`
+- `zsh`
 
-Each package is self-contained and can be deployed independently using GNU Stow.
+Each package is self-contained and can be deployed independently.
+
+---
+
+## Related Documentation
+
+### Repository
+
+These documents describe the overall organization and conventions of the repository.
+
+- [README](../README.md)
+- [House Conventions](house-conventions.md)
+- [Documentation Standards](documentation-standards.md)
+
+### Environment
+
+These documents describe the development environment and workstation configuration.
+
+- [Developer Toolkit](developer-toolkit.md)
+- [Machine Status](machine-status.md)
+- [New Machine](new-machine.md)
+
+### Networking
+
+These documents describe the home network and remote administration.
+
+- [Home Network](home-network.md)
+- [SSH & Remote Development](references/ssh-and-remote-development.md)

@@ -2,7 +2,9 @@
 
 Personal development environment for macOS and Arch Linux.
 
-This repository contains the configuration, documentation, and conventions used to maintain a consistent development environment across multiple machines.
+This repository contains the configuration, documentation, conventions, and workflows used to maintain a consistent development environment across multiple machines.
+
+---
 
 ## Goals
 
@@ -10,26 +12,77 @@ This repository contains the configuration, documentation, and conventions used 
 - Keep configuration modular, documented, and easy to understand.
 - Make changes incrementally using Git feature branches.
 - Optimize the environment for long-term maintainability.
+- Document workflows, not just configuration.
+
+---
+
+## Philosophy
+
+This repository is more than a collection of dotfiles.
+
+It documents the environment, conventions, and engineering decisions that allow multiple computers to behave as one familiar development workspace.
+
+---
+
+## Supported Machines
+
+| Machine      | Role                                          |
+| ------------ | --------------------------------------------- |
+| iMac         | Primary workstation and command center        |
+| MacBook Pro  | Portable development workstation              |
+| ArchLatitude | Linux workstation, experimentation, downloads |
+
+---
+
+## Core Toolchain
+
+- Ghostty
+- Neovim
+- Git
+- GNU Stow
+- Zsh
+- Mullvad VPN
+- MarkText
+
+---
 
 ## Repository Layout
 
 ```text
-docs/       Documentation and project notes
-ghostty/    Ghostty terminal configuration
-git/        Git configuration
-zsh/        Zsh configuration
+docs/
+ghostty/
+git/
+zsh/
+dircolors/
+private/
 ```
+
+---
 
 ## Documentation
 
-If you're returning to this project after some time away, these documents provide the quickest path back into the repository.
+### Getting Started
 
-- `docs/architecture.md` — Repository architecture and GNU Stow package layout.
-- `docs/developer-toolkit.md` — Core development tools and supporting utilities.
-- `docs/house-conventions.md` — Engineering conventions and maintenance philosophy.
-- `docs/machine-status.md` — Current deployment status of all supported machines.
-- `docs/new-machine.md` — Provisioning guide for a new development machine.
-- `ROADMAP.md` — Planned enhancements and future work.
+- `README.md`
+- `docs/new-machine.md`
+
+### Environment
+
+- `docs/architecture.md`
+- `docs/developer-toolkit.md`
+- `docs/house-conventions.md`
+
+### Networking
+
+- `docs/home-network.md`
+- `docs/references/ssh-and-remote-development.md`
+
+### Operations
+
+- `docs/machine-status.md`
+- `ROADMAP.md`
+
+---
 
 ## Design Principles
 
@@ -38,51 +91,73 @@ If you're returning to this project after some time away, these documents provid
 - `~/Projects` is reserved for software and creative projects.
 - Shared configuration is preferred whenever possible.
 - Platform-specific behavior is isolated into small, focused files.
-- Documentation should explain **why** decisions were made, not only **what** they are.
+- Documentation explains **why**, not only **what**.
+
+---
 
 ## Deployment
 
 Configuration is deployed using GNU Stow.
 
-Each top-level application directory is maintained as an independent Stow package.
+Each top-level directory represents one independent Stow package.
 
 ```text
-zsh/
-git/
-ghostty/
-dircolors/
-```
-
-Packages are deployed into the home directory using symbolic links.
-
-```bash
-stow zsh
-stow git
-stow ghostty
-stow dircolors
-```
-
-See `docs/architecture.md` for additional information about the repository structure and package layout.
-
-## Current Status
-
-- ✅ Multi-platform zsh configuration completed.
-- ✅ Repository relocated to `~/.dotfiles`.
-- ✅ GNU Stow adopted for deployment of dotfiles.
-- ✅ zsh, git, Ghostty, and dircolors managed as Stow packages.
-- 🚧 Additional application packages will be added over time.
-
-## Architecture Diagram
-
-~/.dotfiles
-│
+Packages
 ├── dircolors
 ├── ghostty
 ├── git
 └── zsh
-     │
-     ▼
-GNU Stow
-     │
-     ▼
-Home directory
+```
+
+Deploy packages:
+
+```bash
+stow dircolors
+stow ghostty
+stow git
+stow zsh
+```
+
+See `docs/architecture.md` for additional information.
+
+---
+
+## Current Status
+
+- ✅ GNU Stow migration completed
+- ✅ Multi-platform Zsh configuration
+- ✅ Ghostty standardized
+- ✅ Git configuration standardized
+- ✅ SSH standardized across all machines
+- ✅ Reserved DHCP addressing
+- ✅ Mullvad VPN deployed
+- ✅ MarkText deployed
+- 🚧 Documentation refinement in progress
+
+---
+
+## Architecture
+
+```mermaid
+flowchart TD
+
+    GH[GitHub Repository]
+
+    DF["~/.dotfiles"]
+
+    ST[GNU Stow]
+
+    HOME["Home Directory"]
+
+    IMAC[iMac]
+    MBP[MacBook Pro]
+    ARCH[ArchLatitude]
+
+    GH --> DF
+    DF --> ST
+    ST --> HOME
+
+    HOME --> IMAC
+    HOME --> MBP
+    HOME --> ARCH
+```
