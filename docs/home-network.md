@@ -42,6 +42,7 @@ Some design decisions documented here were made before I assumed responsibility 
 - [Network Services](#network-services)
 - [Maintenance](#maintenance)
 - [Troubleshooting](#troubleshooting)
+- [Power Failure Behavior](#power-failure-behavior)
 
 # Design Decisions
 
@@ -76,33 +77,28 @@ Periodic router speed tests consistently confirm that the service is delivering 
 
 I also subscribe to NFL Sunday Ticket so I can watch New York Giants games throughout the football season.
 
-**Optional Services:**
+**Current Services:**
 
-The current Frontier account includes the following optional monthly services:
+The Frontier account currently includes the following network-related service:
 
-| Service                | Monthly Cost | Current Understanding                                                                                                            |
-| ---------------------- | ------------:| -------------------------------------------------------------------------------------------------------------------------------- |
-| Frontier Provided eero | $7.00        | Rental of three eero Pro 7 mesh devices.                                                                                         |
-| Whole-Home Wi-Fi       | $10.00       | Appears to duplicate functionality already available through the native eero application. Additional value is currently unclear. |
-| Wi-Fi Security Plus    | $10.00       | Security-related service. The specific features and benefits are not yet fully understood.                                       |
+| Service                | Monthly Cost | Status                                                |
+| ---------------------- | -----------: | ----------------------------------------------------- |
+| Frontier Provided eero | $7.00        | Active — rental of three eero Pro 7 mesh devices.    |
 
-**Current Observations:**
+**Resolved Optional Services:**
 
-The MyFrontier application exposes much of the same information available within the eero application, including:
+Two optional services were previously included on the Frontier account:
 
-- eero device management
-- Connected device inventory
-- Router speed testing
-- Wi-Fi insights
+| Service             | Previous Monthly Cost | Current Status |
+| ------------------- | --------------------: | -------------- |
+| Whole-Home Wi-Fi    | $10.00               | Cancelled      |
+| Wi-Fi Security Plus | $10.00               | Cancelled      |
 
-At this time it is not clear whether these capabilities are provided by the optional Whole-Home Wi-Fi service or simply integrated into the MyFrontier application.
+Frontier confirmed that neither optional service was required for normal operation of the eero Gateway or the three-node eero mesh network.
 
-**Questions for Frontier:**
+Cancelling the two services reduced the monthly Frontier bill by $20 without affecting Internet service or normal operation of the eero network.
 
-- If Whole-Home Wi-Fi is cancelled, what functionality will be lost?
-- Is the rental of Frontier-provided eero devices independent of the Whole-Home Wi-Fi service?
-- What additional features are included with Wi-Fi Security Plus?
-- Can either optional service be cancelled without affecting Internet performance or the operation of the eero mesh network?
+The MyFrontier application continues to expose network information such as connected devices, router speed testing, and Wi-Fi insights.
 
 **Historical Notes:**
 
@@ -617,6 +613,28 @@ Potential future maintenance activities include:
 - Review network performance.
 - Audit unused switch ports and cable runs.
 - Test power outage recovery procedures.
+
+# Power Failure Behavior
+
+### Observation
+
+During a thunderstorm in July 2026, a utility power outage interrupted both the local network and Internet connectivity.
+
+Observed behavior:
+
+- Wi-Fi became unavailable immediately after utility power was lost.
+- The eero mobile application reported loss of connectivity.
+- After commercial power was restored, the ONT, eero Gateway, and client devices recovered automatically without manual intervention.
+- Client devices automatically rejoined the wireless network.
+
+### Current Understanding
+
+This event suggests that the network infrastructure is **not currently protected by an uninterruptible power supply (UPS)**. Both local Wi-Fi connectivity and Internet access were unavailable until utility power was restored.
+
+### Future Considerations
+
+- Consider installing a small UPS to protect the Frontier ONT, eero Gateway, and core switch.
+- Repeat a controlled power-loss test after any UPS installation to verify expected behavior.
 
 # Troubleshooting
 

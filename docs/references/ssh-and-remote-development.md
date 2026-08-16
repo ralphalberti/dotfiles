@@ -24,7 +24,9 @@ LAN and Tailscale transport paths are both supported. Detailed Tailscale and Mul
 - [Remote Editing with Neovim](#remote-editing-with-neovim)
 - [SSH Configuration](#ssh-configuration)
 - [Connectivity Checks](#connectivity-checks)
-- [Troubleshooting `known_hosts`](#troubleshooting-known_hosts)
+- [Troubleshooting](#troubleshooting)
+  - [known_hosts](#known_hosts)
+  - [Local Clipboard with Remote Neovim](#local-clipboard-with-remote-neovim)
 - [Tailscale SSH Hosts](#tailscale-ssh-hosts)
 - [Project-Specific SSH Hosts](#project-specific-ssh-hosts)
 - [Machine SSH Keys](#machine-ssh-keys)
@@ -277,7 +279,9 @@ ssh arch 'whoami; pwd; uname -n'
 
 ---
 
-# Troubleshooting `known_hosts`
+# Troubleshooting
+
+## known_hosts
 
 SSH stores the identity of previously contacted systems in
 `~/.ssh/known_hosts`. If a machine receives a new IP address, SSH may report
@@ -299,7 +303,7 @@ the intended machine. A changed fingerprint can be expected after reinstalling
 an operating system or regenerating SSH host keys, but an unexplained change
 should be investigated.
 
-## Inspect a Stored Entry
+### Inspect a Stored Entry
 
 Use `ssh-keygen -F` to find an entry without manually searching the file:
 
@@ -309,7 +313,7 @@ ssh-keygen -F 192.168.5.170
 
 No output means that no matching entry was found.
 
-## Remove an Obsolete Entry
+### Remove an Obsolete Entry
 
 Use `ssh-keygen -R` to safely remove an old hostname or IP address:
 
@@ -339,7 +343,7 @@ ssh arch
 SSH will prompt to confirm the machine's current host key and then record it
 for the reserved address.
 
-## Verify the Effective SSH Configuration
+### Verify the Effective SSH Configuration
 
 When an alias appears to use the wrong address, inspect the configuration SSH
 actually resolved:
@@ -350,6 +354,28 @@ ssh -G arch | grep -E '^(hostname|user|identityfile|identitiesonly) '
 
 If the `hostname` value does not match the eero reservation, update the
 corresponding `HostName` in `~/.ssh/config`.
+
+## Local Clipboard with Remote Neovim
+
+### Symptoms
+
+When editing over SSH, Neovim may report:
+
+```text
+clipboard: No provider.
+```
+
+### Cause
+
+Neovim is running on the remote Linux system and cannot directly access the local macOS clipboard.
+
+### Solution
+
+1. Copy on macOS using `⌘C`.
+2. Enter Insert mode (`i`) in Neovim.
+3. Press `⌘V`.
+
+Ghostty pastes the local clipboard into the SSH session, so Neovim receives the text as normal terminal input.
 
 ---
 
