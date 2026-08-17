@@ -1,16 +1,32 @@
 # House Conventions
 
-These are the working conventions for maintaining this development environment.
+**Version:** 1.0
+**Last Updated:** 2026-08-17
+**Status:** Living Document
 
-## Repository Workflow
+# About This Document
+
+This document records the working conventions used to maintain the development
+environment.
+
+These conventions favor clarity, consistency, reversibility, and long-term
+maintainability. They are practical defaults rather than rigid rules.
+
+# Repository Workflow
 
 - Use short-lived feature branches for meaningful changes.
 - Keep `main` clean and stable.
 - Test locally before committing.
 - Commit focused, understandable changes.
 - Merge only after the change feels complete.
+- Inspect repository state before destructive Git operations.
+- Prefer reversible operations when learning or when repository state is
+  complicated.
+- Verify completed work before deleting branches, stashes, or other recovery
+  points.
+- Push meaningful completed work so GitHub remains the durable source of truth.
 
-## Tool Preferences
+# Tool Preferences
 
 Prefer modern CLI tools where they improve readability and workflow.
 
@@ -20,18 +36,21 @@ Prefer modern CLI tools where they improve readability and workflow.
 - Use `ls` or `eza` depending on which gives the clearest output.
 - Prefer Markdown that reads well as plain text, not only when rendered.
 
-## Dotfiles Philosophy
+# Dotfiles Philosophy
 
 - GitHub is the source of truth.
 - `~/.dotfiles` contains environment configuration.
 - `~/Projects` is reserved for software and creative projects.
-- Shared configuration belongs in common files.
-- Platform-specific configuration belongs in platform-specific files.
-- Preserve useful experiments in documentation rather than loading them automatically.
+- Prefer shared configuration first.
+- Introduce platform-specific configuration only when behavior genuinely
+  differs.
+- Preserve useful experiments in documentation rather than loading them
+  automatically.
 
-## Engineering Style
+# Engineering Style
 
 - Make small, incremental, reversible changes.
 - Understand the architecture before introducing new tools.
 - Prefer clear structure over clever shortcuts.
+- Solve the problem you actually have before adding abstraction.
 - Optimize configuration files for Future Ralph.
