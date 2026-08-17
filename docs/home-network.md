@@ -1,7 +1,7 @@
 # Home Network Documentation
 
-**Version:** 1.1
-**Last Updated:** 2026-08-14
+**Version:** 1.2
+**Last Updated:** 2026-08-17
 **Status:** Living Document
 
 ---
@@ -114,7 +114,7 @@ This inventory identifies the major components that make up the home network. It
 | ONT                   | Optical Network Terminal | Nokia        | TBD                 | Laundry Room Network Cabinet | Active | Terminates the incoming fiber connection           |
 | ONT Power Module      | ONT Power Module         | Nokia        | 3MV00743ABAB Rev 02 | Laundry Room Network Cabinet | Active | Provides power and reset functionality for the ONT |
 | Internet Gateway      | Gateway                  | eero         | Pro 7               | Laundry Room Network Cabinet | Active | Primary router for the home network                |
-| Core Switch           | Managed Switch           | Ubiquiti     | Pro Max 8 PoE       | Laundry Room Network Cabinet | Active | Central wired network switch                       |
+| Core Switch           | Gigabit Ethernet Switch   | —            | XGS-1008            | Laundry Room Network Cabinet | Active | 8-port central wired network switch                |
 | PoE Injector          | Kitchen AP Injector      | Ubiquiti     | U-POE-af            | Laundry Room Network Cabinet | Active | Supplies power to the Kitchen UniFi AP             |
 | PoE Injector          | Lanai AP Injector        | Ubiquiti     | U-POE-af            | Laundry Room Network Cabinet | Active | Supplies power to the Lanai UniFi AP               |
 | Wireless Access Point | Kitchen AP               | Ubiquiti     | UniFi AP            | Kitchen                      | Active | Ceiling-mounted access point                       |
@@ -135,7 +135,7 @@ The Gateway performs the following primary functions:
 - Provides firewall protection between the Internet and internal devices.
 - Manages the home's eero mesh Wi-Fi network.
 - Connects the Frontier ONT to the internal network.
-- Provides the uplink to the Ubiquiti Pro Max 16 PoE core switch.
+- Provides the uplink to the XGS-1008 core switch.
 
 ## Current Understanding
 
@@ -158,7 +158,7 @@ The Gateway is connected as follows:
 | Connection | Connected Device                        |
 | ---------- | --------------------------------------- |
 | WAN        | Frontier Optical Network Terminal (ONT) |
-| LAN        | Ubiquiti Pro Max 16 PoE Switch          |
+| LAN        | XGS-1008 8-Port Gigabit Switch          |
 | Mesh       | Guest Bedroom eero Pro 7                |
 | Mesh       | Master Bedroom eero Pro 7               |
 
@@ -192,7 +192,7 @@ The following items remain under investigation:
 
 The home network is centered around the **Laundry Room Network Cabinet**, which serves as the primary distribution point for Internet service, routing, switching, and structured cabling throughout the home.
 
-Internet service enters the home through the Frontier Optical Network Terminal (ONT). The ONT connects to the eero Pro 7 Gateway, which provides Internet routing and manages the home's eero mesh network. The Gateway connects to the Ubiquiti Pro Max 16 PoE switch, which distributes wired network connectivity throughout the home.
+Internet service enters the home through the Frontier Optical Network Terminal (ONT). The ONT connects to the eero Pro 7 Gateway, which provides Internet routing and manages the home's eero mesh network. The Gateway connects to the XGS-1008 8-Port Gigabit Switch, which distributes wired network connectivity throughout the home.
 
 Two UniFi wireless access points provide additional wireless coverage and are powered by dedicated Ubiquiti U-POE-af injectors. Wireless client devices, such as the HP OfficeJet Pro 9120e printer, connect to the home network through the eero mesh Wi-Fi system.
 
@@ -202,7 +202,7 @@ flowchart TD
     Internet["Frontier Fiber Internet"]
     ONT["Optical Network Terminal (ONT)"]
     Gateway["eero Pro 7 Gateway"]
-    Switch["Ubiquiti Pro Max 16 PoE Switch"]
+    Switch["XGS-1008 8-Port Gigabit Switch"]
 
     PI1["Kitchen U-POE-af Injector"]
     PI2["Lanai U-POE-af Injector"]
@@ -241,16 +241,15 @@ The Core Switch performs the following primary functions:
 
 - Distributes wired network connectivity throughout the home.
 - Connects infrastructure devices to the local network.
-- Provides Power over Ethernet (PoE) capability.
 - Serves as the central aggregation point for all wired Ethernet connections.
 
 ## Current Understanding
 
-The Core Switch is a **Ubiquiti Pro Max 16 PoE** managed Ethernet switch located in the Laundry Room Network Cabinet.
+The Core Switch is an **XGS-1008 8-Port Gigabit Switch** located in the Laundry Room Network Cabinet.
 
 The switch receives its uplink from the eero Pro 7 Gateway and provides network connectivity to structured cabling that serves multiple rooms throughout the home.
 
-Although the switch is capable of supplying Power over Ethernet (PoE), the two UniFi Access Points are currently powered through dedicated Ubiquiti U-POE-af injectors installed between the switch and the access points. This configuration was installed by the original network installer and is operating reliably.
+The XGS-1008 does not provide PoE to the two UniFi Access Points. Each access point is powered through a dedicated Ubiquiti U-POE-af injector installed between the switch and the access point. This configuration was installed by the original network installer and is operating reliably.
 
 ## Physical Location
 
@@ -267,11 +266,10 @@ Current known connections include:
 - Lanai UniFi Access Point (via U-POE-af injector).
 - Structured Ethernet runs to multiple rooms throughout the home.
 
-Additional switch port assignments will be documented as they are identified.
+All eight switch ports have been investigated. Detailed port assignments and cable-run destinations are maintained in `docs/cable-map.md`; port 7 remains physically unidentified.
 
 ## Operational Notes
 
-- The switch is managed through the UniFi Network application.
 - Power and link/activity LEDs provide a quick indication of switch and port status.
 - The switch operates continuously and normally requires no routine maintenance.
 
@@ -280,18 +278,17 @@ Additional switch port assignments will be documented as they are identified.
 Periodic verification should include:
 
 - Confirm all expected Ethernet links are active.
-- Verify PoE-powered devices remain operational.
-- Check for firmware updates through the UniFi Network application.
-- Document newly identified switch port assignments.
+- Verify the two external PoE injectors and their connected access points remain operational.
+- Keep `docs/cable-map.md` current when switch connections change.
 
 ## Outstanding Questions
 
-The following items remain under investigation:
+The following item remains under investigation:
 
-- Complete a port-by-port mapping of all switch connections.
-- Document unused switch ports.
-- Record any VLAN configuration if implemented in the future.
-- Determine whether any additional managed switch features are currently in use.
+- Identify the destination of the unnumbered cable connected to switch port 7.
+
+If VLANs or other managed network features are introduced in the future, they
+should be documented as part of the device that provides those capabilities.
 
 # Wireless Infrastructure
 
@@ -339,7 +336,7 @@ Two UniFi Access Points are installed:
 - Kitchen
 - Lanai
 
-The access points are connected to the Ubiquiti Pro Max 16 PoE Switch through dedicated Ubiquiti U-POE-af PoE injectors.
+The access points connect to the XGS-1008 8-Port Gigabit Switch through dedicated Ubiquiti U-POE-af PoE injectors, which provide power to the access points.
 
 The original installer selected this configuration and it is operating reliably.
 
@@ -444,7 +441,7 @@ The structured cabling system is designed to:
 
 The home's Ethernet cabling was professionally installed by Uxari during the original smart home installation.
 
-Individual cable runs terminate in the Laundry Room Network Cabinet and are connected to the Ubiquiti Pro Max 16 PoE Switch as needed.
+Individual cable runs terminate in the Laundry Room Network Cabinet and are connected to the XGS-1008 8-Port Gigabit Switch as needed.
 
 Known connected devices include:
 
@@ -453,7 +450,7 @@ Known connected devices include:
 - Lanai UniFi Access Point
 - Wall Ethernet outlets throughout the home
 
-Additional cable runs may be available for future expansion.
+Additional structured cable runs may exist, but no unassigned switch ports are currently documented.
 
 ## Distribution Architecture
 
@@ -482,7 +479,7 @@ Each cable run is independent and terminates at the network cabinet. This simpli
 
 - All permanent Ethernet cabling terminates in the Laundry Room Network Cabinet.
 - The core switch serves as the central distribution point for wired network connectivity.
-- Unused cable runs may be connected as additional network devices are installed.
+- Future network expansion may require repatching an existing connection or adding switch capacity.
 
 ## Maintenance Notes
 
@@ -505,11 +502,13 @@ This companion document contains room locations, wall jack identifiers, switch p
 
 The following items may be documented in a future revision:
 
-- Create a complete port-to-room mapping.
-- Label each wall jack and corresponding switch port.
+- Identify the destination of the unnumbered cable connected to switch port 7.
+- Label additional wall jacks or cable runs if needed.
 - Document cable categories (Cat5e, Cat6, etc.).
-- Identify any unused cable runs available for expansion.
 - Add photographs of the network cabinet and cable terminations.
+
+The current switch-port and known cable-run mapping is maintained in
+`docs/cable-map.md`.
 
 # Network Services
 
