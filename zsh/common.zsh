@@ -101,6 +101,23 @@ setopt hist_find_no_dups
 setopt HIST_REDUCE_BLANKS
 
 #------------------------------------------------------------------------------
+# Functions
+#
+# Shared shell functions available on every supported platform.
+#------------------------------------------------------------------------------
+
+hist() {
+  local count="${1:-20}"
+
+  if [[ "$1" == "-g" ]]; then
+    shift
+    fc -l 1 | grep --color=auto -i -- " $*"
+  else
+    fc -l -"$count"
+  fi
+}
+
+#------------------------------------------------------------------------------
 # Completion
 #
 # Configure completion matching and let fzf-tab provide the interactive preview
