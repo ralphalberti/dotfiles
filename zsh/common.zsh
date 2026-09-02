@@ -30,6 +30,9 @@ fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Remove the following aliases after zinit.zsh gets sourced
+unalias zpl zplg zi zini 2>/dev/null
+
 #------------------------------------------------------------------------------
 # Shell Theme
 #
