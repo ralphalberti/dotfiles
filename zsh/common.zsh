@@ -106,15 +106,55 @@ setopt HIST_REDUCE_BLANKS
 # Shared shell functions available on every supported platform.
 #------------------------------------------------------------------------------
 
-hist() {
+hst() {
   local count="${1:-20}"
 
-  if [[ "$1" == "-g" ]]; then
-    shift
-    fc -l 1 | grep --color=auto -i -- " $*"
-  else
-    fc -l -"$count"
-  fi
+  case "$1" in
+    "")
+      fc -l -"$count"
+      ;;
+
+    -h|--help)
+      cat <<'EOF'
+Usage:
+  hst [count]
+  hst -g <search terms>
+  hst -w <search terms>
+  hst -h | --help
+
+Options:
+  -g    Search history for a substring
+  -w    Search history for whole words
+  -h    Show this help
+
+Examples:
+  hst
+  hst 50
+  hst -g git switch -c
+  hst -w hist
+EOF
+      ;;
+
+    -g)
+      shift
+      fc -l 1 | grep --color=auto -i -- " $*"
+      ;;
+
+    -w)
+      shift
+      fc -l 1 | grep --color=auto -iw -- " $*"
+      ;;
+
+    <->)
+      fc -l -"$count"
+      ;;
+
+    *)
+      print "hst: invalid argument: $1"
+      print "Try 'hst --help' for usage."
+      return 1
+      ;;
+  esac
 }
 
 #------------------------------------------------------------------------------
