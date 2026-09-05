@@ -3,11 +3,12 @@
 # Keep this file limited to aliases used regularly across macOS and Arch.
 
 # ------------------------------------------------------------
-# Normal files and directories
+# Normal files, directories & links
 # ------------------------------------------------------------
 
 alias files='ls -l *(.N)'
-alias dir='ls -ld -- *(/N)'
+alias dir='ls -ld -- *(-/N)'
+alias links='ls -ld -- *(@N)'
 
 # ------------------------------------------------------------
 # Hidden files and directories
