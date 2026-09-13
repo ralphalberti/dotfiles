@@ -40,8 +40,10 @@ unalias zpl zplg zi zini 2>/dev/null
 # terminal.
 #------------------------------------------------------------------------------
 
-zinit ice depth=1
-zinit light romkatv/powerlevel10k
+if [[ -z ${ZSH_LINUX_CONSOLE:-} ]]; then
+  zinit ice depth=1
+  zinit light romkatv/powerlevel10k
+fi
 
 #------------------------------------------------------------------------------
 # Plugins
@@ -66,7 +68,9 @@ zinit cdreplay -q
 # Load the Powerlevel10k prompt configuration if it exists.
 #------------------------------------------------------------------------------
 
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+if [[ -z ${ZSH_LINUX_CONSOLE:-} && -f ~/.p10k.zsh ]]; then
+  source ~/.p10k.zsh
+fi
 
 #------------------------------------------------------------------------------
 # Keybindings

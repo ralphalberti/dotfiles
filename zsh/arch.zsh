@@ -4,6 +4,12 @@
 # Arch Linux-specific shell configuration.
 #------------------------------------------------------------------------------
 
+# Use a plain prompt on the Linux virtual console, before X starts.
+if [[ -n ${ZSH_LINUX_CONSOLE:-} ]]; then
+  PROMPT='%n@%m:%~%# '
+  RPROMPT=''
+fi
+
 #------------------------------------------------------------------------------
 # SSH Agent
 #

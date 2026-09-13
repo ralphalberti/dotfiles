@@ -5,8 +5,13 @@
 # platform-specific configuration lives in macos.zsh or arch.zsh.
 #------------------------------------------------------------------------------
 
+# Identify the Linux virtual console before loading any prompt.
+if [[ $OSTYPE == linux* && $TERM == linux ]]; then
+  ZSH_LINUX_CONSOLE=1
+fi
+
 # Powerlevel10k instant prompt should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ -z ${ZSH_LINUX_CONSOLE:-} && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
