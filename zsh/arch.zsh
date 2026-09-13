@@ -22,6 +22,7 @@ ssh-add -l >/dev/null 2>&1 || ssh-add ~/.ssh/github_key >/dev/null 2>&1
 #------------------------------------------------------------------------------
 
 alias ls='ls --color'
+alias music='ncmpcpp'
 
 # Update the Arch keyring before performing a full system upgrade.
 # This helps prevent signature verification failures after long periods
