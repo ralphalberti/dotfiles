@@ -1,7 +1,7 @@
 # Tailscale & Mullvad Reference
 
-**Version:** 1.0  
-**Last Updated:** 2026-08-14  
+**Version:** 1.1
+**Last Updated:** 2026-09-23
 **Status:** Living Document
 
 ---
@@ -209,19 +209,45 @@ An exit node provides an egress path for Internet traffic. Mullvad VPN servers a
 
 A Mullvad exit node can be selected independently on each machine. Selecting an exit node on Arch does not automatically select it on the iMac or MacBook Pro.
 
-The currently preferred Arch exit node is:
-
-```text
-us-mia-wg-003.mullvad.ts.net
-```
-
-This is a preferred endpoint rather than a permanent dependency.
-
-## Select the Exit Node on Arch
+Rather than depending on a specific Mullvad endpoint, ask Tailscale to suggest an appropriate exit node:
 
 ```bash
-sudo tailscale set   --exit-node=us-mia-wg-003.mullvad.ts.net.   --exit-node-allow-lan-access=true
+tailscale exit-node suggest
 ```
+
+The suggested Mullvad endpoint may change over time and should not be treated as permanent configuration.
+
+## Arch Operator Permission
+
+On Arch Linux, changing Tailscale preferences normally requires root privileges. Because Tailscale is used interactively on this system, the normal user is configured as the Tailscale operator.
+
+This is a one-time configuration:
+
+```bash
+sudo tailscale set --operator=$USER
+```
+
+The operator setting persists. After it has been configured, routine Tailscale preference changes can be made without `sudo`.
+
+Commands that only inspect Tailscale state, such as `tailscale status` and `tailscale exit-node suggest`, do not require this operator configuration.
+
+## Select a Mullvad Exit Node on Arch
+
+First ask Tailscale for its current suggestion:
+
+```bash
+tailscale exit-node suggest
+```
+
+Then use the suggested hostname when selecting the exit node. For example:
+
+```bash
+tailscale set \
+  --exit-node=<suggested-node> \
+  --exit-node-allow-lan-access=true
+```
+
+The `--exit-node-allow-lan-access=true` setting preserves direct access to devices on the home LAN while Internet-bound traffic uses the Mullvad exit node.
 
 Verify:
 
@@ -233,7 +259,7 @@ curl https://am.i.mullvad.net/connected
 ## Disable the Exit Node
 
 ```bash
-sudo tailscale set --exit-node=
+tailscale set --exit-node=
 ```
 
 Verify again with the Mullvad connectivity check.
@@ -435,13 +461,23 @@ Successful connections through both aliases confirm that LAN and Tailscale acces
 
 ## Exit Node Works but LAN Devices Are Unreachable
 
-Verify that local network access is enabled:
+Verify that local network access is enabled.
+
+First identify the currently selected exit node:
 
 ```bash
-sudo tailscale set   --exit-node=us-mia-wg-003.mullvad.ts.net.   --exit-node-allow-lan-access=true
+tailscale status
 ```
 
-Then verify the LAN route and test the destination directly.
+Then reapply the exit-node configuration with local LAN access enabled:
+
+```bash
+tailscale set \
+  --exit-node=<selected-node> \
+  --exit-node-allow-lan-access=true
+```
+
+Verify the LAN route and test the destination directly.
 
 ## Mullvad Is Not Active
 
